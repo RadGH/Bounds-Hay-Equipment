@@ -1,0 +1,19 @@
+/*
+Collapsible menu with link:
+Link:
+- Class: bounds-collapsible-toggle
+- Href: #your_target_id
+
+Target:
+- ID: your_target_id
+- Class: bounds-collapsible
+- Class (When Collapsed): collapsed
+- Class (When Expanded): expanded
+ */
+.bounds-collapsible {
+	display: none;
+}
+
+.bounds-collapsible.expanded {
+	display: block;
+}

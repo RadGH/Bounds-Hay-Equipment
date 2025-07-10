@@ -1,0 +1,141 @@
+/* Hide the selections and clear button for the Search Contacts select2 field
+(this field is only used to populate the options in the preceding checkbox field) */
+.acf-field-67c9c9964066d .select2-selection__choice,
+.acf-field-67c9c9964066d .select2-selection__clear {
+	display: none;
+}
+
+/* General - Post type columns */
+.widefat .column-featured_image { width: 110px; }
+.widefat .column-featured_image img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* QR Codes - Post type columns */
+.widefat .column-qr-hits { width: 90px; }
+.widefat .column-asset-redirect { width: 150px; }
+
+/* Tickets - Post type columns */
+.widefat .column-status--qef-type-select-- { width: 140px; }
+.widefat .column-type_of_request--qef-type-radio-- { width: 140px; }
+.widefat .column-name--qef-type-text-- { width: 15%; }
+.widefat .column-asset--qef-type-post_object-- { width: 15%; }
+
+/* Ticket Feedback - Post type columns */
+.widefat .column-feedback-status { width: 120px; }
+
+/* Tickets - Hide Permalink */
+body.post-type-ticket #edit-slug-box {
+	display: none !important;
+}
+
+/* Tickets + Assets -> Post Type Filters (Post list screen) */
+.bhe-post-type-filter {
+	display: inline-flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.bhe-post-type-filter label {
+	padding-right: 10px;
+}
+
+.bhe-post-type-filter select {
+}
+
+.tablenav:has(.bhe-post-type-filter) {
+	margin-bottom: 7px;
+}
+
+.tablenav:has(.bhe-post-type-filter),
+.tablenav:has(.bhe-post-type-filter) .actions {
+	display: flex;
+	align-items: flex-end;
+}
+
+.tablenav:has(.bhe-post-type-filter) .tablenav-pages {
+	margin-bottom: 2px;
+	margin-left: auto;
+}
+
+/* Tickets -> Asset Details - Asset Type Summary */
+#ticket_asset_details.postbox {
+	background: #e6f0f4;
+}
+
+.asset-type-summary .asset-thumbnail img {
+	width: 200px;
+	height: auto;
+}
+
+.asset-type-summary .asset-taxonomy .label {
+	font-weight: 700;
+}
+
+.asset-type-summary table {
+	text-align: left;
+	margin: 0 -5px;
+}
+
+.asset-type-summary table th {
+	padding: 5px 5px 0;
+}
+
+.asset-type-summary table td {
+	padding: 0 5px 5px;
+}
+
+/* Tickets -> Feedback List */
+.ticket-feedback-list {
+	counter-reset: ticket-feedback;
+}
+
+.ticket-feedback-list .ticket-feedback-item {
+	counter-increment: ticket-feedback;
+	position: relative;
+	padding-left: 40px;
+}
+
+.ticket-feedback-list .ticket-feedback-item::before {
+	content: counter(ticket-feedback) ". ";
+	position: absolute;
+	top: 0;
+	left: 0px;
+	width: 40px;
+	text-align: center;
+}
+
+/* Ticket Feedback */
+body.post-type-ticket-feedback #wpbody a.page-title-action {
+	display: none;
+}
+
+/* ACF Field Classes:
+bh-hidden-field: Hide the field
+*/
+.acf-fields > .acf-field.bh-hidden-field {
+	position: absolute;
+	top: -100000px;
+	visibility: hidden;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	user-select: none;
+}
+
+/* ACF Elements:
+bh-notice,
+bh-notice-error: Displays an admin-style error
+*/
+.bh-notice {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-left-width: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+	padding: 1px 12px;
+}
+
+.bh-notice.bh-notice-error {
+	border-left-color: #d63638;
+}

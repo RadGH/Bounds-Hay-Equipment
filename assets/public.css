@@ -1,0 +1,77 @@
+/* stick footer to bottom of short pages */
+
+body {
+	--admin-bar-height: 0px;
+
+	&.admin-bar {
+		@media (min-width: 600.02px) {
+			--admin-bar-height: 46px;
+		}
+		@media (min-width: 782.02px) {
+			--admin-bar-height: 32px;
+		}
+	}
+}
+
+.wp-site-blocks {
+	display: flex;
+	flex-direction: column;
+	min-height: calc(100vh - var(--admin-bar-height));
+
+	> footer {
+		margin-top: auto;
+	}
+}
+
+
+/* gravity forms */
+
+.gform-theme--framework {
+	--gf-font-weight-secondary: 600;
+	--gf-ctrl-outline-color-focus: var(--wp--preset--color--accent-1);
+	--gf-ctrl-outline-offset: 0;
+	--gf-ctrl-outline-width-focus: 2px;
+}
+
+
+/* general forms */
+
+input[type="password"] {
+	color: #fff;
+	background: var(--wp--preset--color--accent-4);
+	padding: 0 12px;
+	line-height: 47px;
+	border: 0;
+	border-radius: 10px;
+	transition: outline-width .1s;
+	outline: 0 solid var(--wp--preset--color--accent-1);
+}
+
+input[type="password"]:focus {
+	outline-width: 3px;
+}
+
+input[type="submit"] {
+	background: var(--wp--preset--color--accent-1);
+	color: #fff;
+	padding: 0 20px;
+	border-radius: 10px;
+	border: 0;
+	font-size: 16px;
+	line-height: 47px;
+	cursor: pointer;
+	transition: background-color .15s;
+}
+
+input[type="submit"]:hover {
+	background: #BA3F00;
+}
+
+.post-password-form label {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin: 60px 0 20px;
+	font-size: 18px;
+	font-weight: 600;
+}
