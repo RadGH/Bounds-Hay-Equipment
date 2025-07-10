@@ -5,6 +5,7 @@ Description: Provides the Equipment post types and integrations with Gravity For
 Version: 1.1.2
 Author: Radley Sustaire, ZingMap LLC
 Author URI: https://zingmap.com/
+Created on: 5/30/2025
 */
 
 define( 'BHE_PATH', __DIR__ );
