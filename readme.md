@@ -25,6 +25,7 @@ Provides the Equipment post types and integrations with Gravity Forms and Advanc
 
 ### 1.1.3
 - Added an option to export tickets to CSV
+- Added support for iCal feeds
 
 ### 1.1.2
 - Moved to Git
