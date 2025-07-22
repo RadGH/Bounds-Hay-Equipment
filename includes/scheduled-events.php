@@ -13,6 +13,14 @@ class BHE_Scheduled_Events {
 		// Capture the hook when an event is triggered
 		add_action( 'rs_schedule/event', array( $this, 'event_triggered' ), 10, 2 );
 		
+		// Add rewrite rules for the Google Calendar ICS feed
+		add_action( 'init', array( $this, 'add_rewrite_rules' ) );
+		
+		// Displays the ICS feed page when visiting the ICS feed URL
+		add_action( 'template_redirect', array( $this, 'display_ics_feed_page' ) );
+		
+		// Add a link to the ICS feed on the calendar page
+		add_action( 'rs_schedule/calendar_page_after', array( $this, 'add_ics_feed_link' ) );
 	}
 	
 	// Singleton instance
@@ -24,6 +32,92 @@ class BHE_Scheduled_Events {
 	}
 	
 	// Utilities
+	
+	/**
+	 * Generates and outputs the ICS feed content
+	 *
+	 * @return void
+	 */
+	public function generate_ics_feed() {
+		if ( isset($_GET['debug']) ) {
+			echo '<pre>';
+		}else{
+			// Send headers that identify this as an ICS file
+			header( 'Content-Type: text/calendar; charset=utf-8' );
+			header( 'Content-Disposition: inline; filename="scheduled-events.ics"' );
+		}
+		
+		// require_once ABSPATH . WPINC . '/class-phpmailer.php'; // For timezone-safe formatting
+		$events = RS_Schedule_Post_Type::get_schedule_events();
+		
+		$title = get_option('blogname');
+		$hostname = parse_url( home_url(), PHP_URL_HOST );
+		
+		echo "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//{$title}//Scheduled Events//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n";
+		
+		foreach ( $events as $event ) {
+			if ( isset( $event['rrule'] ) ) {
+				$dtstart = strtotime( $event['rrule']['dtstart'] );
+				$until = isset( $event['rrule']['until'] ) ? strtotime( $event['rrule']['until'] . ' 23:59:59' ) : null;
+				
+				$rrule = [
+					'FREQ=' . strtoupper( $event['rrule']['freq'] ),
+					'INTERVAL=' . intval( $event['rrule']['interval'] ),
+				];
+				
+				if ( isset( $event['rrule']['byweekday'] ) && is_array( $event['rrule']['byweekday'] ) ) {
+					$rrule[] = 'BYDAY=' . strtoupper( implode( ',', $event['rrule']['byweekday'] ) );
+				}
+				if ( $until ) {
+					$rrule[] = 'UNTIL=' . gmdate( 'Ymd\THis\Z', $until );
+				}
+				
+				echo "BEGIN:VEVENT\r\n";
+				echo "UID:" . $event['id'] . "@{$hostname}\r\n";
+				echo "DTSTAMP:" . gmdate( 'Ymd\THis\Z' ) . "\r\n";
+				echo $this->fold_ical_line( "SUMMARY:" . $event['title'] ) . "\r\n";
+				echo "DTSTART:" . gmdate( 'Ymd\THis\Z', $dtstart ) . "\r\n";
+				echo "RRULE:" . implode( ';', $rrule ) . "\r\n";
+				if ( ! empty( $event['url'] ) ) {
+					echo "URL:" . esc_url( $event['url'] ) . "\r\n";
+				}
+				echo "END:VEVENT\r\n";
+				
+			} elseif ( isset( $event['start'] ) ) {
+				
+				echo "BEGIN:VEVENT\r\n";
+				echo "UID:" . $event['id'] . "@{$hostname}\r\n";
+				echo "DTSTAMP:" . gmdate( 'Ymd\THis\Z' ) . "\r\n";
+				echo $this->fold_ical_line( "SUMMARY:" . $event['title'] ) . "\r\n";
+				echo "DTSTART:" . gmdate( 'Ymd\THis\Z', strtotime( $event['start'] ) ) . "\r\n";
+				if ( isset( $event['end'] ) ) {
+					echo "DTEND:" . gmdate( 'Ymd\THis\Z', strtotime( $event['end'] ) ) . "\r\n";
+				}
+				if ( ! empty( $event['url'] ) ) {
+					echo "URL:" . esc_url( $event['url'] ) . "\r\n";
+				}
+				echo "END:VEVENT\r\n";
+				
+			}
+		}
+		
+		echo "END:VCALENDAR\r\n";
+		
+		if ( isset($_GET['debug']) ) {
+			echo '</pre>';
+		}
+	}
+	
+	/**
+	 * Automatically wraps long lines in the ICS feed to ensure they conform to the 75-character limit
+	 *
+	 * @param $line
+	 *
+	 * @return string
+	 */
+	public function fold_ical_line( $line ) {
+		return wordwrap( $line, 75, "\r\n ", true );
+	}
 	
 	// Hooks
 	/**
@@ -131,6 +225,50 @@ class BHE_Scheduled_Events {
 		
 	}
 	
+	/**
+	 * Add rewrite rules for the Google Calendar ICS feed
+	 *
+	 * @see https://bounds.zingmap.com/scheduled-events/
+	 * @see https://bounds.zingmap.com/scheduled-events/?debug
+	 *
+	 * @return void
+	 */
+	public function add_rewrite_rules() {
+		add_rewrite_rule( '^scheduled-events$', 'index.php?ics_feed=1', 'top' );
+		add_rewrite_tag( '%ics_feed%', '1' );
+	}
+	
+	/**
+	 * Displays the ICS feed page when visiting the ICS feed URL
+	 *
+	 * @see https://bounds.zingmap.com/scheduled-events/
+	 * @see https://bounds.zingmap.com/scheduled-events/?debug
+	 *
+	 * @return void
+	 */
+	public function display_ics_feed_page() {
+		// Only apply to the ICS feed URL: /scheduled-events.ics
+		if ( ! get_query_var( 'ics_feed' ) ) return;
+		
+		$this->generate_ics_feed();
+		exit;
+	}
+	
+	/**
+	 * Add a link to the ICS feed on the calendar page
+	 *
+	 * @return void
+	 */
+	public function add_ics_feed_link() {
+		$ics_feed_url = site_url( '/scheduled-events' );
+		
+		$content = '<a href="' . esc_url( $ics_feed_url ) . '" class="button button-secondary" target="_blank" rel="noopener noreferrer">Download iCal Feed</a>';
+		$content .= ' You can also copy this URL to add it to Google Calendar, Outlook, Apple Calendar, and more';
+		
+		echo '<div class="ics-feed-link">';
+		echo wpautop( $content );
+		echo '</div>';
+	}
 	
 }
 
