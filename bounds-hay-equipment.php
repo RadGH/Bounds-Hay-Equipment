@@ -2,7 +2,7 @@
 /*
 Plugin Name: Bounds Hay Equipment
 Description: Provides the Equipment post types and integrations with Gravity Forms and Advanced Custom Fields. QR codes are generated and assigned to each equipment for relaying to contact forms.
-Version: 1.1.2
+Version: 1.1.3
 Author: Radley Sustaire, ZingMap LLC
 Author URI: https://zingmap.com/
 Created on: 5/30/2025
@@ -10,7 +10,7 @@ Created on: 5/30/2025
 
 define( 'BHE_PATH', __DIR__ );
 define( 'BHE_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
-define( 'BHE_VERSION', '1.1.2' );
+define( 'BHE_VERSION', '1.1.3' );
 
 class BHE_Plugin {
 	
@@ -54,6 +54,7 @@ class BHE_Plugin {
 		require_once( BHE_PATH . '/includes/tickets.php' );
 		require_once( BHE_PATH . '/includes/ticket-feedback.php' );
 		require_once( BHE_PATH . '/includes/ticket-feedback-forms.php' );
+		require_once( BHE_PATH . '/includes/export-tickets.php' );
 		require_once( BHE_PATH . '/includes/utility.php' );
 		
 		// After the plugin has been activated, flush rewrite rules, upgrade database, etc.
