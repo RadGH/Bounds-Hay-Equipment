@@ -1,9 +1,0 @@
-0000000000000000000000000000000000000000 78816515e0216f65fd7184f6f3f51e409cd9b5b7 Radley <radleygh@gmail.com> 1743632685 -0700	commit (initial): Moved to Git
-78816515e0216f65fd7184f6f3f51e409cd9b5b7 15060ca30dd9f18437438c758ab9518464115206 Radley <radleygh@gmail.com> 1743636185 -0700	commit: Menu positioning updates
-15060ca30dd9f18437438c758ab9518464115206 3452bb928e65ed8026e34d8cce6a03a22b49a33d Radley <radleygh@gmail.com> 1746737972 -0700	commit: Progress
-3452bb928e65ed8026e34d8cce6a03a22b49a33d ce6fe508209c0535e043b2f1b2c6c10ef78a256c Radley <radleygh@gmail.com> 1746806975 -0700	commit: Progress
-ce6fe508209c0535e043b2f1b2c6c10ef78a256c 28ee3d02a1e4c3fca1d120f3c136055ff624d34b Radley <radleygh@gmail.com> 1747426636 -0700	commit: Progress on Review #1 changes
-28ee3d02a1e4c3fca1d120f3c136055ff624d34b 2d4e78f51ef7cfd44cf160607e7e5e17bee8bfba Radley <radleygh@gmail.com> 1748632922 -0700	commit: Added columns for QR Codes
-2d4e78f51ef7cfd44cf160607e7e5e17bee8bfba 4c8a644ccbca6efc72841c311ee7ca881a81defa Radley <radleygh@gmail.com> 1750443429 -0700	commit: progress
-4c8a644ccbca6efc72841c311ee7ca881a81defa 8bf31c5feab8a0bf3ea13e3cc955cd7c81b32ecc Radley <radleygh@gmail.com> 1751066923 -0700	commit: Added Scheduled Events
-8bf31c5feab8a0bf3ea13e3cc955cd7c81b32ecc 082ab3397be323ac9635a0a66f78df74c270abe0 Radley <radleygh@gmail.com> 1752169423 -0700	commit: Removed GHL API Keys, moved to ACF Settings
